@@ -1,0 +1,10 @@
+step 1
+& "C:\Program Files\MySQL\MySQL Shell 8.0\bin\mysqlsh.exe"
+step2
+\connect root@localhost
+step 3
+password
+step 4
+if in js then \sql
+step 5 
+source schema.sql
