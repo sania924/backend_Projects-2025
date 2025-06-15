@@ -19,6 +19,7 @@ const Employee=mongoose.model("Employee",userSchema)
 const Employee1=new Employee({
   name:"sania",
   Age:30,
+  
   Email:"@gmail.com"
 })
 Employee1.save();
