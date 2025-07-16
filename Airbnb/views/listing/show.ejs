@@ -10,6 +10,15 @@
     <p>Price: $<%= listing.price %></p>
     <p>Location: <%= listing.location %></p>
     <p>Description: <%= listing.description %></p>
-    <p>Image: <img src="<%= listing.image %>" alt="<%= listing.title %>"></p>
-</body>
-</html>
+<% if (listing.image && listing.image.url) { %>
+  <img src="<%= listing.image.url %>" alt="<%= listing.title %>" width="400" />
+<% } else { %>
+  <p>No image available</p>
+<% } %>
+<a href="/listings/<%= listing._id %>/edit">Edit Listing</a>
+<form action="/listings/<%= listing._id %>?_method=DELETE" method="POST" style="display:inline;">
+    <button type="submit">Delete Listing</button>
+</form>
+
+</body>     
+</html>       
