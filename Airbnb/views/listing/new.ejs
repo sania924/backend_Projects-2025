@@ -1,32 +1,84 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+<% layout("/layout/boilerplate") %>
+
 <body>
-   <form action="/listings" method="POST">
-  <label>Title:</label>
-  <input type="text" name="listing[title]" required><br>
+  <div class="row">
+    <div class="col-8 offset-2">
+        <div class="mt-2">
+            <h4 class="mt-3">Create a New Listing</h4>
+          <p>Fill in the details below to create a new listing.</p>
 
-  <label>Description:</label>
-  <textarea name="listing[description]" required></textarea><br>
+        </div>
+ <form action="/listings" method="POST" novalidate class="needs-validation">
+  <div>
+      <label for="title" class="form-label">Title:</label>
+  <input type="text" name="listing[title]" class="form-control" required>
+   <div class="invalid-feedback">
+        Please enter a title.
+      </div>
+  </div>
+<div>
+  <label for="description" class="form-label">Description:</label>
+  <textarea name="listing[description]" class="form-control" required></textarea>
+  <div class="invalid-feedback">
+        Please enter a description.
+      </div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+   <div>
+      <label for="price" class="form-label">Price:</label>
+  <input name="listing[price]" class="form-control" required>
+      <div class="invalid-feedback">
+        Please enter a price.
+      </div>
 
-  <label>Price:</label>
-  <input type="number" name="listing[price]" required><br>
+    </div>
+   </div>
+ <div class="col-md-8">
+     <div>
+      <label for="country" class="form-label">Country:</label>
+  <input type="text" name="listing[country]" class="form-control" required>
+      <div class="invalid-feedback">
+        Please enter a country.
+      </div>
 
-  <label>Location:</label>
-  <input type="text" name="listing[location]" required><br>
+    </div>
+  
+  </div>
+  </div>
+ 
 
-  <label>Image URL:</label>
-  <input type="url" name="listing[image][url]" required><br>
 
-  <label>Image Filename:</label>
-  <input type="text" name="listing[image][filename]" required><br>
+<div>
+  <label for="image-url" class="form-label">Image URL:</label>
+  <input type="url" name="listing[image][url]" class="form-control" required>
+  <div class="invalid-feedback">
+        Please enter a valid image URL.
+      </div>
+</div>
+<div>
+  <label for="image-filename" class="form-label">Image Filename:</label>
+  <input type="text" name="listing[image][filename]" class="form-control" required>
+  <div class="invalid-feedback">
+        Please enter an image filename.
+      </div>
+</div>
 
-  <button type="submit">Create Listing</button>
+ <div>
+    <label for="location" class="form-label">Location:</label>
+  <input type="text" name="listing[location]" class="form-control" required>
+      <div class="invalid-feedback">
+        Please enter a location.
+      </div>
+
+    </div>
+<div class="mt-3 mb-3">
+  <button type="submit" class="btn btn-primary">Create Listing</button>
+
+</div>
 </form>
+    </div>
+  </div>
+  
  
 </body>
-</html>

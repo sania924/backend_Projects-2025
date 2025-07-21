@@ -1,23 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Airbnb</title>
-</head>
-<body>
-    <h1>All Listings</h1>
-<form action="/listings/new" method="get">
-    <button type="submit">Create New Listing</button>
-</form>
-    <ul>
+<% layout('layout/boilerplate') %>
+
+    <body>
+        <h1>All Listings</h1>
+        <!-- <form action="/listings/new" method="get">
+            <button type="submit">Create New Listing</button>
+        </form> -->
+        <div class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-1 m-4">
+            <% listings.forEach(listing=> { %>
+                <a href="/listings/<%= listing._id %>" class="listing-link">
+                    <div class="card col mb-2 shadow-sm height-100 ">
+                        <img src="<%= listing.image && listing.image.url ? listing. image.url : '/images/default.jpg' %>"
+                            class="card-img-top" alt="<%= listing.title %>" >
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <%= listing.title %>
+                            </h5>
+                            <p class="card-text">$<%= listing.price %> - <%= listing.location %>
+                            </p>
+                            <p class="card-text">
+                                <%= listing.description.substring(0, 50) %>...
+                            </p>
+                        </div>
+                    </div>
+                </a>
+                <% }); %>
+
+        </div>
+        </div>
+        <!-- <ul>
         <% listings.forEach(listing => { %>
             <li>
                 <!-- <p><%= listing.title %></p> -->
-               <a href="/listings/<%= listing._id %>"><%= listing.title %></a>
-              
-            </li>
-        <% }); %>
-    </ul>
-</body>
-</html>
+        <!-- <a href="/listings/<%= listing._id %>"><%= listing.title %></a> -->
+
+        <!-- </li> -->
+        <!-- <% }); %> -->
+        <!-- </ul> -->
+    </body>
+ <!-- funtion to create a sum of 2 values
+ -->
