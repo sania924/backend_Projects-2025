@@ -14,7 +14,7 @@ const methodOverride = require('method-override');
 app.use(methodOverride('_method')); // Allow PUT and DELETE methods in forms
 const mongoose = require('mongoose');
 const Listing = require('./models/listing'); 
-
+const {listingSchema} = require('./schema'); // Import the Joi schema for validation
 // Connect to MongoDB with Mongoose using then
 mongoose.connect('mongodb://localhost:27017/airbnb')
     .then(() => {
@@ -23,7 +23,16 @@ mongoose.connect('mongodb://localhost:27017/airbnb')
     .catch(err => {
         console.error('Error connecting to MongoDB:', err);
     });
-
+// schema validation middleware with Joi
+    const validateListing = (req, res, next) => {
+let result = listingSchema.validate(req.body);
+    if (result.error) {
+        const msg = result.error.details.map(el => el.message).join(',');
+        throw new ExpressError(msg, 400);
+    } else {
+        next();
+    }
+};
 app.get('/', (req, res) => {        
     res.send('Welcome to Airbnb!');
 });
@@ -64,7 +73,7 @@ app.post('/listings', wrapAsync( async (req, res) => {
 
 // edit route to show form for editing a listing
 app.get('/listings/:id/edit', wrapAsync( async (req, res) => { 
-    const listing = await Listing.findById(req.params.id);
+     const listing = await Listing.findById(req.params.id);
     res.render('listing/edit.ejs', { listing });
 }));
 
@@ -96,6 +105,7 @@ app.delete('/listings/:id', wrapAsync( async (req, res) => {
 //   res.status(statusCode).render('error', { statusCode, message });
 // // console.log(ExpressError);
 // });
+
 
 app.use((req, res) => {
   res.status(404).render('error', {
