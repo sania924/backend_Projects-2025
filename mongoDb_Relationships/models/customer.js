@@ -42,13 +42,13 @@ const addCustomer = async () => {
   });
 
   await newCustomer.save();
-  console.log('✅ Customer and orders saved');
+  console.log(' Customer and orders saved');
 };
 
 // Fetch customer with populated order details
 const getCustomerWithOrders = async () => {
   const customer = await Customer.findOne({ name: 'Alice' }).populate('orders');
-  console.log('📄 Customer with orders:', JSON.stringify(customer, null, 2));
+  console.log(' Customer with orders:', JSON.stringify(customer, null, 2));
 };
 
 // Main function to run both
