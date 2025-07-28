@@ -14,7 +14,8 @@ const methodOverride = require('method-override');
 app.use(methodOverride('_method')); // Allow PUT and DELETE methods in forms
 const mongoose = require('mongoose');
 const Listing = require('./models/listing'); 
-const {listingSchema} = require('./schema'); // Import the Joi schema for validation
+const Review = require('./models/review.js'); // Import the Review model
+const {listingSchema,reviewSchema} = require('./schema'); // Import the Joi schema for validation
 // Connect to MongoDB with Mongoose using then
 mongoose.connect('mongodb://localhost:27017/airbnb')
     .then(() => {
@@ -33,7 +34,16 @@ let result = listingSchema.validate(req.body);
         next();
     }
 };
-app.get('/', (req, res) => {        
+const validateReview = (req, res, next) => {
+    let result = reviewSchema.validate(req.body);
+    if (result.error) {
+        const msg = result.error.details.map(el => el.message).join(',');
+        throw new ExpressError(msg, 400);
+    } else {
+        next();
+    }
+};
+app.get('/', (req, res) => { 
     res.send('Welcome to Airbnb!');
 });
 
@@ -56,7 +66,7 @@ app.get('/listings/new', (req, res) => {
 // show route to get a single listing by ID
 app.get('/listings/:id', wrapAsync( async (req, res) => {
   
-        const listing = await Listing.findById(req.params.id);
+        const listing = await Listing.findById(req.params.id).populate('reviews');
       
         res.render('listing/show.ejs', { listing });
     
@@ -93,6 +103,27 @@ app.delete('/listings/:id', wrapAsync( async (req, res) => {
         res.status(500).send("Failed to delete listing");
     }
 }));
+// Review Routes
+// create route to handle form submission and create a new review
+app.post('/listings/:id/reviews', validateReview, wrapAsync( async (req, res) => {
+    const listing = await Listing.findById(req.params.id);
+    const review = new Review(req.body.review);
+    listing.reviews.push(review);
+    await review.save();
+    await listing.save();
+    console.log(`Review created for listing ${listing._id}`);
+    res.redirect(`/listings/${listing._id}`);
+}));
+// delete route to delete a review
+app.delete('/listings/:id/reviews/:reviewId', wrapAsync( async (req, res) => {
+    const { id, reviewId } = req.params;
+    const listing = await Listing.findById(id);
+    listing.reviews.pull(reviewId);
+    await listing.save();
+    console.log(`Review with ID ${reviewId} deleted from listing ${id}`);
+    res.redirect(`/listings/${id}`);
+}));
+
 // 404 catch‑all
 // app.all('*', (req, res, next) => {
 //     console.log('USER API CALLED');

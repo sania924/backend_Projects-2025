@@ -27,8 +27,43 @@
     
    
   </div>
- 
 
+<div class="col-8 offset-2">
+  <hr>
+  <h4>Reviews</h4>
+  <form action="/listings/<%= listing._id %>/reviews" method="POST" novalidate class="needs-validation">
+     <div class="mb-3">
+
+      <label for="rating" class="form-label">Add Rating</label>
+      <input type="range" name="review[rating]" class="form-range" id="rating" min="1" max="5" step="1" required>
+    </div>
+    <div class="mb-3">
+
+      <label for="review" class="form-label">Write a comment</label>
+      <textarea class="form-control" name="review[comment]" id="review" rows="3" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-outline-primary mb-3">Submit Review</button>
+  </form>
+  <hr>
+  <h5>Existing Reviews</h5>
+
+</div>
+<div class="row">
+  <% for (let review of listing.reviews) { %>
+    <div class="col-8 offset-2">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Rating: <%= review.rating %></h5>
+          <p class="card-text">Comment: <%= review.comment %></p>
+
+          <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST" style="display:inline;">
+            <button class="btn btn-danger">Delete Review</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  <% } %>
+</div>
 
 </body>     
   <!-- <a href="/listings/<%= listing._id %>/edit">Edit Listing</a>
